@@ -13,12 +13,26 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.22")
 
     // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-core
     implementation("io.dropwizard:dropwizard-core:2.1.4")
+    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-hibernate
+    //implementation("io.dropwizard:dropwizard-hibernate:2.1.4")
     // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-db
     implementation("io.dropwizard:dropwizard-db:2.1.4")
+    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-jackson
+    implementation("io.dropwizard:dropwizard-jackson:2.1.4")
+    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-jdbi3
+    implementation("io.dropwizard:dropwizard-jdbi3:2.1.4")
+    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-migrations
+    implementation("io.dropwizard:dropwizard-migrations:2.1.4")
+
+    // https://mvnrepository.com/artifact/org.kodein.di/kodein-di
+    implementation("org.kodein.di:kodein-di:7.16.0")
+
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation("org.postgresql:postgresql:42.5.1")
 
     testImplementation(kotlin("test"))
 }

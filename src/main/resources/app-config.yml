@@ -1,1 +1,25 @@
 configTest: Hey
+appName: Dropwizard User Management
+server:
+  type: default
+  applicationConnectors:
+    - type: http
+      port: 7070
+  adminConnectors:
+    - type: http
+      port: 7071
+database:
+  driverClass: org.postgresql.Driver
+  user: user_management_user # TODO Hide under environment variables
+  password: 123456 # TODO Hide under environment variables
+  url: jdbc:postgresql://localhost:5432/user_management_service # TODO Hide under environment variables
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minute
