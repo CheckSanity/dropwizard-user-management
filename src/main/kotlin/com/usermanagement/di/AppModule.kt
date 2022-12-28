@@ -1,7 +1,10 @@
 package com.usermanagement.di
 
 import com.usermanagement.AppConfiguration
+import com.usermanagement.database.dao.GroupsDao
 import com.usermanagement.database.dao.UsersDao
+import com.usermanagement.repository.groups.GroupsRepository
+import com.usermanagement.repository.groups.IGroupsRepository
 import com.usermanagement.repository.users.IUsersRepository
 import com.usermanagement.repository.users.UsersRepository
 import io.dropwizard.jdbi3.JdbiFactory
@@ -20,6 +23,10 @@ object AppModule {
 
             bindSingleton<IUsersRepository> {
                 UsersRepository(usersDao = UsersDao(database = instance()))
+            }
+
+            bindSingleton<IGroupsRepository> {
+                GroupsRepository(groupsDao = GroupsDao(database = instance()))
             }
         }
     }
