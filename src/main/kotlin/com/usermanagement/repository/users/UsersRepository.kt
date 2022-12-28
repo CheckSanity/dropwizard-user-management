@@ -1,7 +1,9 @@
 package com.usermanagement.repository.users
 
 import com.github.kittinunf.result.Result
+import com.github.kittinunf.result.isFailure
 import com.usermanagement.database.dao.IUsersDao
+import com.usermanagement.database.entity.UserEntity
 import com.usermanagement.repository.users.User.Companion.toData
 import com.usermanagement.utils.RepositoryError
 
@@ -47,11 +49,49 @@ class UsersRepository(private val usersDao: IUsersDao) : IUsersRepository {
         }
     }
 
-    override fun updateUser(userId: Int): Result<User, RepositoryError> {
-        TODO("Not yet implemented")
+    override fun updateUser(userId: Int, updateUser: UpdateUser): Result<User, RepositoryError> {
+        return Result.of {
+            val result = checkUser(userId = userId)
+            if (result.isFailure()) {
+                return result
+            }
+
+            val user = result.get()
+
+            usersDao.updateUser(
+                id = userId,
+                firstName = updateUser.firstName ?: user.firstName,
+                lastName = updateUser.lastName ?: user.lastName,
+                email = updateUser.email ?: user.email
+            )
+
+            return getUser(id = userId)
+        }
     }
 
-    override fun deleteUser(userId: Int): Result<Unit, RepositoryError> {
-        TODO("Not yet implemented")
+    override fun deleteUser(userId: Int): Result<User, RepositoryError> {
+        return Result.of {
+            val result = checkUser(userId = userId)
+            if (result.isFailure()) {
+                return result
+            }
+
+            usersDao.deleteUser(id = userId)
+
+            return getUser(id = userId)
+        }
+    }
+
+    private fun checkUser(userId: Int): Result<UserEntity, RepositoryError> {
+        return Result.of {
+            val user =
+                usersDao.getById(id = userId) ?: return Result.failure(RepositoryError.UserNotFound)
+
+            if (user.deletedAt != null) {
+                return Result.failure(RepositoryError.UserDeleted)
+            }
+
+            return Result.success(user)
+        }
     }
 }

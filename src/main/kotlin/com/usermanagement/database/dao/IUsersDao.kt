@@ -42,9 +42,23 @@ interface IUsersDao {
         @Bind("createdAt") createdAt: Timestamp = Timestamp.from(Instant.now())
     ): Int?
 
-    @SqlQuery("SELECT * FROM users where id = :id")
+    @SqlQuery("SELECT * FROM users WHERE id = :id")
     fun getById(@Bind("id") id: Int): UserEntity?
 
-    @SqlQuery("SELECT * FROM users where email = :email")
+    @SqlQuery("SELECT * FROM users WHERE email = :email")
     fun getByEmail(@Bind("email") email: String): UserEntity?
+
+    @SqlUpdate("UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email WHERE id = :id")
+    fun updateUser(
+        @Bind("id") id: Int,
+        @Bind("firstName") firstName: String,
+        @Bind("lastName") lastName: String,
+        @Bind("email") email: String
+    )
+
+    @SqlUpdate("UPDATE users SET deletedAt = :deletedAt WHERE id = :id")
+    fun deleteUser(
+        @Bind("id") id: Int,
+        @Bind("deletedAt") deletedAt: Timestamp = Timestamp.from(Instant.now())
+    )
 }

@@ -1,4 +1,3 @@
-appName: Dropwizard User Management
 server:
   type: default
   applicationConnectors:

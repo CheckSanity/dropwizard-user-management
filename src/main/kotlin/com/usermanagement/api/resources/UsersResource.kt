@@ -1,9 +1,11 @@
 package com.usermanagement.api.resources
 
 import com.usermanagement.api.models.NewUserModel
+import com.usermanagement.api.models.UpdateUserModel
 import com.usermanagement.api.models.UserModel.Companion.toModel
 import com.usermanagement.repository.users.IUsersRepository
 import com.usermanagement.repository.users.NewUser
+import com.usermanagement.repository.users.UpdateUser
 import com.usermanagement.utils.RepositoryError
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -104,10 +106,67 @@ class UsersResource(di: DI) : IUserResources {
     }
 
     override fun deleteUser(userId: Int): Response {
-        TODO("Not yet implemented")
+        return usersRepository.deleteUser(userId = userId).fold(
+            success = { user ->
+                Response
+                    .status(Response.Status.OK)
+                    .entity(user.toModel())
+                    .build()
+            },
+            failure = { error ->
+                when (error) {
+                    RepositoryError.UserNotFound,
+                    RepositoryError.UserDeleted -> {
+                        Response
+                            .status(Response.Status.NOT_FOUND)
+                            .entity(error.message)
+                            .build()
+                    }
+
+                    else -> {
+                        Response
+                            .status(Response.Status.BAD_REQUEST)
+                            .entity(error.message)
+                            .build()
+                    }
+                }
+            }
+        )
     }
 
-    override fun updateUser(userId: Int): Response {
-        TODO("Not yet implemented")
+    override fun updateUser(userId: Int, updateUserModel: UpdateUserModel): Response {
+        return usersRepository.updateUser(
+            userId = userId,
+            updateUser = UpdateUser(
+                email = updateUserModel.email,
+                firstName = updateUserModel.firstName,
+                lastName = updateUserModel.lastName
+            )
+        ).fold(
+            success = { user ->
+                Response
+                    .status(Response.Status.OK)
+                    .entity(user.toModel())
+                    .build()
+            },
+            failure = { error ->
+                when (error) {
+                    RepositoryError.UserNotFound,
+                    RepositoryError.UserDeleted -> {
+                        Response
+                            .status(Response.Status.NOT_FOUND)
+                            .entity(error.message)
+                            .build()
+                    }
+
+                    else -> {
+                        Response
+                            .status(Response.Status.BAD_REQUEST)
+                            .entity(error.message)
+                            .build()
+                    }
+                }
+            }
+        )
     }
 }

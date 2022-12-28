@@ -1,6 +1,7 @@
 package com.usermanagement.api.resources
 
 import com.usermanagement.api.models.NewUserModel
+import com.usermanagement.api.models.UpdateUserModel
 import javax.validation.Valid
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
@@ -51,7 +52,10 @@ interface IUserResources {
 
     @PUT
     @Path("{userId}")
-    fun updateUser(@PathParam("userId") userId: Int): Response
+    fun updateUser(
+        @PathParam("userId") userId: Int,
+        @NotNull @Valid updateUserModel: UpdateUserModel
+    ): Response
 
     @DELETE
     @Path("{userId}")

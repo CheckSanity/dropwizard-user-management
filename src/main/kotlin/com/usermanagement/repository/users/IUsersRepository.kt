@@ -16,7 +16,7 @@ interface IUsersRepository {
 
     fun createUser(newUser: NewUser): Result<User, RepositoryError>
 
-    fun updateUser(userId: Int): Result<User, RepositoryError>
+    fun updateUser(userId: Int, updateUser: UpdateUser): Result<User, RepositoryError>
 
-    fun deleteUser(userId: Int): Result<Unit, RepositoryError>
+    fun deleteUser(userId: Int): Result<User, RepositoryError>
 }
