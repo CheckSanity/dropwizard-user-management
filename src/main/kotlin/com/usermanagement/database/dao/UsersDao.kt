@@ -1,7 +1,8 @@
 package com.usermanagement.database.dao
 
-import com.usermanagement.database.entity.User
+import com.usermanagement.database.entity.UserEntity
 import org.jdbi.v3.core.Jdbi
+import java.sql.Timestamp
 
 class UsersDao(database: Jdbi) : IUsersDao {
     private val dao = database.onDemand(IUsersDao::class.java)
@@ -12,9 +13,24 @@ class UsersDao(database: Jdbi) : IUsersDao {
 
     override fun createTable() = dao.createTable()
 
-    override fun getAll(): List<User> = dao.getAll()
+    override fun getAll(
+        sort: String,
+        order: String,
+        limit: Int,
+        offset: Int,
+        deleted: Boolean
+    ): List<UserEntity> =
+        dao.getAll(sort = sort, order = order, limit = limit, offset = offset, deleted = deleted)
 
-    override fun insert(id: Int, name: String) = dao.insert(id = id, name = name)
+    override fun insert(
+        firstName: String,
+        lastName: String,
+        email: String,
+        createdAt: Timestamp
+    ): Int? =
+        dao.insert(firstName = firstName, lastName = lastName, email = email, createdAt = createdAt)
 
-    override fun findById(id: Int): User? = dao.findById(id = id)
+    override fun getById(id: Int): UserEntity? = dao.getById(id = id)
+
+    override fun getByEmail(email: String): UserEntity? = dao.getByEmail(email = email)
 }

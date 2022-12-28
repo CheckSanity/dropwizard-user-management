@@ -1,23 +1,113 @@
 package com.usermanagement.api.resources
 
-import com.usermanagement.database.dao.IUsersDao
-import com.usermanagement.database.entity.User
+import com.usermanagement.api.models.NewUserModel
+import com.usermanagement.api.models.UserModel.Companion.toModel
+import com.usermanagement.repository.users.IUsersRepository
+import com.usermanagement.repository.users.NewUser
+import com.usermanagement.utils.RepositoryError
 import org.kodein.di.DI
 import org.kodein.di.instance
-import javax.ws.rs.GET
-import javax.ws.rs.POST
-import javax.ws.rs.Path
-import javax.ws.rs.Produces
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
 
-@Path("/users")
-@Produces(MediaType.APPLICATION_JSON)
-class UsersResource(di: DI) {
-    private val usersDao: IUsersDao by di.instance()
 
-    @GET
-    fun users(): List<User> = usersDao.getAll()
+class UsersResource(di: DI) : IUserResources {
+    private val usersRepository: IUsersRepository by di.instance()
 
-    @POST
-    fun createUser(): User? = null
+    override fun getUsers(
+        limit: Int,
+        offset: Int,
+        sort: String,
+        order: String,
+        deleted: Boolean
+    ): Response {
+        return usersRepository.getUsers(
+            limit = limit,
+            offset = offset,
+            sort = sort,
+            order = order,
+            deleted = deleted
+        ).fold(
+            success = { users ->
+                Response
+                    .status(Response.Status.OK)
+                    .entity(users.toModel())
+                    .build()
+            },
+            failure = {
+                Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build()
+            }
+        )
+    }
+
+    override fun getUser(userId: Int): Response {
+        return usersRepository.getUser(id = userId).fold(
+            success = { user ->
+                Response
+                    .status(Response.Status.OK)
+                    .entity(user.toModel())
+                    .build()
+            },
+            failure = { error ->
+                when (error) {
+                    is RepositoryError.UserNotFound -> {
+                        Response
+                            .status(Response.Status.NOT_FOUND)
+                            .entity(error.message)
+                            .build()
+                    }
+
+                    else -> {
+                        Response
+                            .status(Response.Status.BAD_REQUEST)
+                            .entity(error.message)
+                            .build()
+                    }
+                }
+            }
+        )
+    }
+
+    override fun createUser(newUserModel: NewUserModel): Response {
+        return usersRepository.createUser(
+            newUser = NewUser(
+                email = newUserModel.email,
+                firstName = newUserModel.firstName,
+                lastName = newUserModel.lastName
+            )
+        ).fold(
+            success = { user ->
+                Response
+                    .status(Response.Status.OK)
+                    .entity(user.toModel())
+                    .build()
+            },
+            failure = { error ->
+                when (error) {
+                    RepositoryError.UserEmailInUse -> {
+                        Response
+                            .status(Response.Status.CONFLICT)
+                            .entity(error.message)
+                            .build()
+                    }
+
+                    else -> {
+                        Response
+                            .status(Response.Status.BAD_REQUEST)
+                            .entity(error.message)
+                            .build()
+                    }
+                }
+            }
+        )
+    }
+
+    override fun deleteUser(userId: Int): Response {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateUser(userId: Int): Response {
+        TODO("Not yet implemented")
+    }
 }

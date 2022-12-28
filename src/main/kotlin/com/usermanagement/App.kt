@@ -2,8 +2,6 @@ package com.usermanagement
 
 import com.usermanagement.api.resources.UsersResource
 import com.usermanagement.di.AppModule
-import com.usermanagement.resources.HelloWorldResource
-import com.usermanagement.resources.RootResource
 import io.dropwizard.Application
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor
 import io.dropwizard.configuration.SubstitutingSourceProvider
@@ -27,9 +25,6 @@ class App : Application<AppConfiguration>() {
 
     override fun run(configuration: AppConfiguration, environment: Environment) {
         AppModule.init(configuration = configuration, environment = environment)
-
-        environment.jersey().register(RootResource(configuration.appName))
-        environment.jersey().register(HelloWorldResource(configuration.configTest))
 
         environment.jersey().register(UsersResource(AppModule.di))
     }

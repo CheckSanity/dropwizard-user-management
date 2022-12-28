@@ -1,4 +1,3 @@
-configTest: Hey
 appName: Dropwizard User Management
 server:
   type: default

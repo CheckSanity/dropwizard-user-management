@@ -34,6 +34,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation("org.postgresql:postgresql:42.5.1")
 
+    // https://mvnrepository.com/artifact/com.github.kittinunf.result/result
+    implementation("com.github.kittinunf.result:result:5.3.0")
+
     testImplementation(kotlin("test"))
 }
 

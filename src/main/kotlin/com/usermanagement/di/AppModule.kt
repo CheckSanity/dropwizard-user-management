@@ -1,8 +1,9 @@
 package com.usermanagement.di
 
 import com.usermanagement.AppConfiguration
-import com.usermanagement.database.dao.IUsersDao
 import com.usermanagement.database.dao.UsersDao
+import com.usermanagement.repository.users.IUsersRepository
+import com.usermanagement.repository.users.UsersRepository
 import io.dropwizard.jdbi3.JdbiFactory
 import io.dropwizard.setup.Environment
 import org.jdbi.v3.core.Jdbi
@@ -17,8 +18,8 @@ object AppModule {
         DI {
             bindSingleton { jdbi }
 
-            bindSingleton<IUsersDao> {
-                UsersDao(instance())
+            bindSingleton<IUsersRepository> {
+                UsersRepository(usersDao = UsersDao(database = instance()))
             }
         }
     }

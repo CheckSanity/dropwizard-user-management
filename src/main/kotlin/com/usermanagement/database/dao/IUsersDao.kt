@@ -1,30 +1,50 @@
 package com.usermanagement.database.dao
 
-import com.usermanagement.database.entity.User
+import com.usermanagement.database.entity.UserEntity
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper
 import org.jdbi.v3.sqlobject.customizer.Bind
+import org.jdbi.v3.sqlobject.customizer.Define
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
+import java.sql.Timestamp
+import java.time.Instant
+import java.util.*
 
-@RegisterRowMapper(User.UserMapper::class)
+@RegisterRowMapper(UserEntity.Mapper::class)
 interface IUsersDao {
     @SqlUpdate(
         "CREATE TABLE IF NOT EXISTS users " +
                 "(id INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
                 "firstName VARCHAR, " +
-                "secondName VARCHAR, " +
+                "lastName VARCHAR, " +
                 "email VARCHAR UNIQUE, " +
-                "createdAt DATE, " +
-                "deletedAt DATE DEFAULT(NULL))"
+                "createdAt TIMESTAMP, " +
+                "deletedAt TIMESTAMP DEFAULT(NULL))"
     )
     fun createTable()
 
-    @SqlQuery("SELECT * FROM users")
-    fun getAll(): List<User>
+    @SqlQuery("SELECT * FROM users ORDER BY <sort> <order> LIMIT :limit OFFSET :offset")
+    fun getAll(
+        @Define("sort") sort: String,
+        @Define("order") order: String,
+        @Bind("limit") limit: Int,
+        @Bind("offset") offset: Int,
+        @Bind("deleted") deleted: Boolean
+    ): List<UserEntity>
 
-    @SqlUpdate("INSERT INTO users (id, name) VALUES (:id, :name)")
-    fun insert(@Bind("id") id: Int, @Bind("name") name: String)
+    @SqlUpdate("INSERT INTO users (firstName, lastName, email, createdAt) VALUES (:firstName, :lastName, :email, :createdAt)")
+    @GetGeneratedKeys
+    fun insert(
+        @Bind("firstName") firstName: String,
+        @Bind("lastName") lastName: String,
+        @Bind("email") email: String,
+        @Bind("createdAt") createdAt: Timestamp = Timestamp.from(Instant.now())
+    ): Int?
 
     @SqlQuery("SELECT * FROM users where id = :id")
-    fun findById(@Bind("id") id: Int): User?
+    fun getById(@Bind("id") id: Int): UserEntity?
+
+    @SqlQuery("SELECT * FROM users where email = :email")
+    fun getByEmail(@Bind("email") email: String): UserEntity?
 }
