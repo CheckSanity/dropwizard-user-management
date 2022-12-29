@@ -17,8 +17,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-core
     implementation("io.dropwizard:dropwizard-core:2.1.4")
-    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-hibernate
-    //implementation("io.dropwizard:dropwizard-hibernate:2.1.4")
     // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-db
     implementation("io.dropwizard:dropwizard-db:2.1.4")
     // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-jackson
@@ -36,6 +34,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.github.kittinunf.result/result
     implementation("com.github.kittinunf.result:result:5.3.0")
+
+    // https://mvnrepository.com/artifact/com.smoketurner/dropwizard-swagger
+    implementation("com.smoketurner:dropwizard-swagger:2.0.12-1")
 
     testImplementation(kotlin("test"))
 }

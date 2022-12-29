@@ -10,9 +10,11 @@ import io.dropwizard.db.PooledDataSourceFactory
 import io.dropwizard.migrations.MigrationsBundle
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
+import io.federecio.dropwizard.swagger.SwaggerBundle
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration
 
 class App : Application<AppConfiguration>() {
-    override fun initialize(bootstrap: Bootstrap<AppConfiguration?>) {
+    override fun initialize(bootstrap: Bootstrap<AppConfiguration>) {
         bootstrap.configurationSourceProvider = SubstitutingSourceProvider(
             bootstrap.configurationSourceProvider,
             EnvironmentVariableSubstitutor(false)
@@ -21,6 +23,11 @@ class App : Application<AppConfiguration>() {
             override fun getDataSourceFactory(configuration: AppConfiguration): PooledDataSourceFactory {
                 return configuration.dataSource
             }
+        })
+
+        bootstrap.addBundle(object : SwaggerBundle<AppConfiguration>() {
+            override fun getSwaggerBundleConfiguration(configuration: AppConfiguration): SwaggerBundleConfiguration =
+                configuration.swaggerConfig
         })
     }
 
