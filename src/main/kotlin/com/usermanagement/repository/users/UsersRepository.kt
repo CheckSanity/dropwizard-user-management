@@ -66,6 +66,10 @@ class UsersRepository(di: DI) : IUsersRepository {
                 return result
             }
 
+            if (updateUser.email != null && usersDao.getByEmail(email = updateUser.email) != null) {
+                return Result.failure(RepositoryError.UserEmailInUse)
+            }
+
             val user = result.get()
 
             usersDao.update(

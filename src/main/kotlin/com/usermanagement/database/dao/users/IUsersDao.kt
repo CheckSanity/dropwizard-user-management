@@ -6,11 +6,11 @@ import java.time.Instant
 
 interface IUsersDao {
     fun getList(
-        sort: String,
-        order: String,
-        deleted: Boolean,
-        limit: Int,
-        offset: Int
+        sort: String = "userId",
+        order: String = "ASC",
+        deleted: Boolean = false,
+        limit: Int = 25,
+        offset: Int = 0
     ): List<UserEntity>
 
     fun insert(

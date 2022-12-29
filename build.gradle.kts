@@ -39,6 +39,12 @@ dependencies {
     implementation("com.smoketurner:dropwizard-swagger:2.0.12-1")
 
     testImplementation(kotlin("test"))
+    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-testing
+    testImplementation("io.dropwizard:dropwizard-testing:2.1.4")
+
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+
 }
 
 tasks.test {

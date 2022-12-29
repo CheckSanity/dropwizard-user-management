@@ -9,7 +9,7 @@ data class UpdateUserModel(
     @ApiModelProperty(
         value = "User's first name",
         example = "Gary",
-        required = true,
+        required = false,
         dataType = "string"
     )
     @JsonProperty("firstName")
@@ -19,7 +19,7 @@ data class UpdateUserModel(
     @ApiModelProperty(
         value = "User's last name",
         example = "Bezruchko",
-        required = true,
+        required = false,
         dataType = "string"
     )
     @JsonProperty("lastName")
@@ -29,7 +29,7 @@ data class UpdateUserModel(
     @ApiModelProperty(
         value = "User's email in valid format",
         example = "garik@bezruchko.com",
-        required = true,
+        required = false,
         dataType = "string"
     )
     @JsonProperty("email")
