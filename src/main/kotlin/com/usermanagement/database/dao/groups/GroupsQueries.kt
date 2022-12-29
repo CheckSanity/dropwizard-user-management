@@ -1,4 +1,4 @@
-package com.usermanagement.database.dao
+package com.usermanagement.database.dao.groups
 
 import com.usermanagement.database.entity.GroupEntity
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper
@@ -7,18 +7,17 @@ import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 import java.sql.Timestamp
-import java.time.Instant
 import java.util.*
 
 @RegisterRowMapper(GroupEntity.Mapper::class)
-interface IGroupsDao {
+interface GroupsQueries {
     @SqlUpdate(
         "CREATE TABLE IF NOT EXISTS groups " +
                 "(id INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
-                "name VARCHAR, " +
+                "name VARCHAR UNIQUE, " +
                 "description TEXT, " +
-                "createdAt TIMESTAMP, " +
-                "deletedAt TIMESTAMP DEFAULT(NULL))"
+                "createdat TIMESTAMP, " +
+                "deletedat TIMESTAMP DEFAULT(NULL))"
     )
     fun createTable()
 
@@ -26,7 +25,12 @@ interface IGroupsDao {
     fun getAll(
         @Bind("limit") limit: Int,
         @Bind("offset") offset: Int,
-        @Bind("deleted") deleted: Boolean
+    ): List<GroupEntity>
+
+    @SqlQuery("SELECT * FROM groups WHERE deletedAt IS NULL LIMIT :limit OFFSET :offset")
+    fun getActive(
+        @Bind("limit") limit: Int,
+        @Bind("offset") offset: Int,
     ): List<GroupEntity>
 
     @SqlUpdate("INSERT INTO groups (name, description, createdAt) VALUES (:name, :description, :createdAt)")
@@ -34,9 +38,18 @@ interface IGroupsDao {
     fun insert(
         @Bind("name") name: String,
         @Bind("description") description: String,
-        @Bind("createdAt") createdAt: Timestamp = Timestamp.from(Instant.now())
+        @Bind("createdAt") createdAt: Timestamp
     ): Int?
 
     @SqlQuery("SELECT * FROM groups where id = :id")
     fun getById(@Bind("id") id: Int): GroupEntity?
+
+    @SqlQuery("SELECT * FROM groups where name = :name")
+    fun getByName(@Bind("name") name: String): GroupEntity?
+
+    @SqlUpdate("UPDATE groups SET deletedAt = :deletedAt WHERE id = :id")
+    fun delete(
+        @Bind("id") id: Int,
+        @Bind("deletedAt") deletedAt: Timestamp
+    )
 }

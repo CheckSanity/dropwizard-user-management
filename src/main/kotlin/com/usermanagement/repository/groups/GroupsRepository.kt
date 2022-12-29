@@ -1,7 +1,9 @@
 package com.usermanagement.repository.groups
 
 import com.github.kittinunf.result.Result
-import com.usermanagement.database.dao.IGroupsDao
+import com.github.kittinunf.result.isFailure
+import com.usermanagement.database.dao.groups.IGroupsDao
+import com.usermanagement.database.entity.GroupEntity
 import com.usermanagement.repository.groups.Group.Companion.toData
 import com.usermanagement.utils.RepositoryError
 
@@ -11,7 +13,7 @@ class GroupsRepository(private val groupsDao: IGroupsDao) : IGroupsRepository {
         offset: Int,
         deleted: Boolean
     ): Result<List<Group>, RepositoryError> = Result.of {
-        groupsDao.getAll(
+        groupsDao.getList(
             limit = limit,
             offset = offset,
             deleted = deleted
@@ -29,6 +31,10 @@ class GroupsRepository(private val groupsDao: IGroupsDao) : IGroupsRepository {
 
     override fun createGroup(newGroup: NewGroup): Result<Group, RepositoryError> {
         return Result.of {
+            if (groupsDao.getByName(name = newGroup.name) != null) {
+                return Result.failure(RepositoryError.GroupNameInUse)
+            }
+
             val id = groupsDao.insert(
                 name = newGroup.name,
                 description = newGroup.description,
@@ -38,11 +44,30 @@ class GroupsRepository(private val groupsDao: IGroupsDao) : IGroupsRepository {
         }
     }
 
-    override fun updateGroup(groupId: Int): Result<Group, RepositoryError> {
-        TODO("Not yet implemented")
+    override fun deleteGroup(groupId: Int): Result<Group, RepositoryError> {
+        return Result.of {
+            val result = checkGroup(groupId = groupId)
+            if (result.isFailure()) {
+                return result
+            }
+
+            groupsDao.delete(id = groupId)
+
+            return getGroup(id = groupId)
+        }
     }
 
-    override fun deleteGroup(groupId: Int): Result<Unit, RepositoryError> {
-        TODO("Not yet implemented")
+    private fun checkGroup(groupId: Int): Result<GroupEntity, RepositoryError> {
+        return Result.of {
+            val group =
+                groupsDao.getById(id = groupId)
+                    ?: return Result.failure(RepositoryError.GroupNotFound)
+
+            if (group.deletedAt != null) {
+                return Result.failure(RepositoryError.GroupDeleted)
+            }
+
+            return Result.success(group)
+        }
     }
 }

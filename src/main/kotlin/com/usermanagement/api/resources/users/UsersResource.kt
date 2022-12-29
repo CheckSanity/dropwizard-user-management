@@ -1,8 +1,8 @@
-package com.usermanagement.api.resources
+package com.usermanagement.api.resources.users
 
-import com.usermanagement.api.models.NewUserModel
-import com.usermanagement.api.models.UpdateUserModel
-import com.usermanagement.api.models.UserModel.Companion.toModel
+import com.usermanagement.api.models.users.NewUserModel
+import com.usermanagement.api.models.users.UpdateUserModel
+import com.usermanagement.api.models.users.UserModel.Companion.toModel
 import com.usermanagement.repository.users.IUsersRepository
 import com.usermanagement.repository.users.NewUser
 import com.usermanagement.repository.users.UpdateUser
@@ -12,7 +12,7 @@ import org.kodein.di.instance
 import javax.ws.rs.core.Response
 
 
-class UsersResource(di: DI) : IUserResources {
+class UsersResource(di: DI) : IUsersResources {
     private val usersRepository: IUsersRepository by di.instance()
 
     override fun getUsers(

@@ -1,6 +1,6 @@
 package com.usermanagement
 
-import com.usermanagement.api.resources.UsersResource
+import com.usermanagement.api.resources.users.UsersResource
 import com.usermanagement.di.AppModule
 import io.dropwizard.Application
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor

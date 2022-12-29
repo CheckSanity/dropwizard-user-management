@@ -2,7 +2,7 @@ package com.usermanagement.repository.users
 
 import com.github.kittinunf.result.Result
 import com.github.kittinunf.result.isFailure
-import com.usermanagement.database.dao.IUsersDao
+import com.usermanagement.database.dao.users.IUsersDao
 import com.usermanagement.database.entity.UserEntity
 import com.usermanagement.repository.users.User.Companion.toData
 import com.usermanagement.utils.RepositoryError
@@ -15,7 +15,7 @@ class UsersRepository(private val usersDao: IUsersDao) : IUsersRepository {
         order: String,
         deleted: Boolean
     ): Result<List<User>, RepositoryError> = Result.of {
-        usersDao.getAll(
+        usersDao.getList(
             limit = limit,
             offset = offset,
             sort = sort,
@@ -58,7 +58,7 @@ class UsersRepository(private val usersDao: IUsersDao) : IUsersRepository {
 
             val user = result.get()
 
-            usersDao.updateUser(
+            usersDao.update(
                 id = userId,
                 firstName = updateUser.firstName ?: user.firstName,
                 lastName = updateUser.lastName ?: user.lastName,
@@ -76,7 +76,7 @@ class UsersRepository(private val usersDao: IUsersDao) : IUsersRepository {
                 return result
             }
 
-            usersDao.deleteUser(id = userId)
+            usersDao.delete(id = userId)
 
             return getUser(id = userId)
         }

@@ -1,4 +1,4 @@
-package com.usermanagement.api.models
+package com.usermanagement.api.models.users
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.usermanagement.repository.users.User

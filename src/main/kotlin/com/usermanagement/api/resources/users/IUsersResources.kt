@@ -1,7 +1,7 @@
-package com.usermanagement.api.resources
+package com.usermanagement.api.resources.users
 
-import com.usermanagement.api.models.NewUserModel
-import com.usermanagement.api.models.UpdateUserModel
+import com.usermanagement.api.models.users.NewUserModel
+import com.usermanagement.api.models.users.UpdateUserModel
 import javax.validation.Valid
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
-interface IUserResources {
+interface IUsersResources {
     @GET
     fun getUsers(
         @QueryParam("limit")

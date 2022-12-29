@@ -1,8 +1,8 @@
 package com.usermanagement.di
 
 import com.usermanagement.AppConfiguration
-import com.usermanagement.database.dao.GroupsDao
-import com.usermanagement.database.dao.UsersDao
+import com.usermanagement.database.dao.groups.GroupsDao
+import com.usermanagement.database.dao.users.UsersDao
 import com.usermanagement.repository.groups.GroupsRepository
 import com.usermanagement.repository.groups.IGroupsRepository
 import com.usermanagement.repository.users.IUsersRepository

@@ -14,7 +14,5 @@ interface IGroupsRepository {
 
     fun createGroup(newGroup: NewGroup): Result<Group, RepositoryError>
 
-    fun updateGroup(groupId: Int): Result<Group, RepositoryError>
-
-    fun deleteGroup(groupId: Int): Result<Unit, RepositoryError>
+    fun deleteGroup(groupId: Int): Result<Group, RepositoryError>
 }

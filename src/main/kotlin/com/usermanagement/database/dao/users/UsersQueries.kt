@@ -1,4 +1,4 @@
-package com.usermanagement.database.dao
+package com.usermanagement.database.dao.users
 
 import com.usermanagement.database.entity.UserEntity
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper
@@ -8,11 +8,10 @@ import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 import java.sql.Timestamp
-import java.time.Instant
 import java.util.*
 
 @RegisterRowMapper(UserEntity.Mapper::class)
-interface IUsersDao {
+interface UsersQueries {
     @SqlUpdate(
         "CREATE TABLE IF NOT EXISTS users " +
                 "(id INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
@@ -29,8 +28,15 @@ interface IUsersDao {
         @Define("sort") sort: String,
         @Define("order") order: String,
         @Bind("limit") limit: Int,
-        @Bind("offset") offset: Int,
-        @Bind("deleted") deleted: Boolean
+        @Bind("offset") offset: Int
+    ): List<UserEntity>
+
+    @SqlQuery("SELECT * FROM users WHERE deletedAt IS NULL ORDER BY <sort> <order> LIMIT :limit OFFSET :offset")
+    fun getActive(
+        @Define("sort") sort: String,
+        @Define("order") order: String,
+        @Bind("limit") limit: Int,
+        @Bind("offset") offset: Int
     ): List<UserEntity>
 
     @SqlUpdate("INSERT INTO users (firstName, lastName, email, createdAt) VALUES (:firstName, :lastName, :email, :createdAt)")
@@ -39,7 +45,7 @@ interface IUsersDao {
         @Bind("firstName") firstName: String,
         @Bind("lastName") lastName: String,
         @Bind("email") email: String,
-        @Bind("createdAt") createdAt: Timestamp = Timestamp.from(Instant.now())
+        @Bind("createdAt") createdAt: Timestamp
     ): Int?
 
     @SqlQuery("SELECT * FROM users WHERE id = :id")
@@ -49,7 +55,7 @@ interface IUsersDao {
     fun getByEmail(@Bind("email") email: String): UserEntity?
 
     @SqlUpdate("UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email WHERE id = :id")
-    fun updateUser(
+    fun update(
         @Bind("id") id: Int,
         @Bind("firstName") firstName: String,
         @Bind("lastName") lastName: String,
@@ -57,8 +63,8 @@ interface IUsersDao {
     )
 
     @SqlUpdate("UPDATE users SET deletedAt = :deletedAt WHERE id = :id")
-    fun deleteUser(
+    fun delete(
         @Bind("id") id: Int,
-        @Bind("deletedAt") deletedAt: Timestamp = Timestamp.from(Instant.now())
+        @Bind("deletedAt") deletedAt: Timestamp
     )
 }
