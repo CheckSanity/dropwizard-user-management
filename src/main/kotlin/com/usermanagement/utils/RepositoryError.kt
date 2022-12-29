@@ -9,4 +9,5 @@ sealed class RepositoryError(override val message: String) : Throwable() {
     object GroupNotFound : RepositoryError(message = "Group not found")
     object GroupNotCreated : RepositoryError(message = "Could not create group")
     object GroupDeleted : RepositoryError(message = "Group deleted")
+    object UserNotAssignedToGroup : RepositoryError(message = "User not assigned to group")
 }

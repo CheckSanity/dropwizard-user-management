@@ -6,8 +6,12 @@ import com.usermanagement.database.dao.groups.IGroupsDao
 import com.usermanagement.database.entity.GroupEntity
 import com.usermanagement.repository.groups.Group.Companion.toData
 import com.usermanagement.utils.RepositoryError
+import org.kodein.di.DI
+import org.kodein.di.instance
 
-class GroupsRepository(private val groupsDao: IGroupsDao) : IGroupsRepository {
+class GroupsRepository(di: DI) : IGroupsRepository {
+    private val groupsDao: IGroupsDao by di.instance()
+
     override fun getGroups(
         limit: Int,
         offset: Int,

@@ -16,7 +16,7 @@ data class UserEntity(
     internal class Mapper : RowMapper<UserEntity> {
         override fun map(rs: ResultSet, ctx: StatementContext): UserEntity {
             return UserEntity(
-                id = rs.getInt("id"),
+                id = rs.getInt("userId"),
                 email = rs.getString("email"),
                 firstName = rs.getString("firstName"),
                 lastName = rs.getString("lastName"),

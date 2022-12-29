@@ -1,5 +1,6 @@
 package com.usermanagement
 
+import com.usermanagement.api.resources.groups.GroupsResource
 import com.usermanagement.api.resources.users.UsersResource
 import com.usermanagement.di.AppModule
 import io.dropwizard.Application
@@ -27,6 +28,7 @@ class App : Application<AppConfiguration>() {
         AppModule.init(configuration = configuration, environment = environment)
 
         environment.jersey().register(UsersResource(AppModule.di))
+        environment.jersey().register(GroupsResource(AppModule.di))
     }
 
 

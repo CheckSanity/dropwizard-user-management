@@ -15,7 +15,7 @@ data class GroupEntity(
     internal class Mapper : RowMapper<GroupEntity> {
         override fun map(rs: ResultSet, ctx: StatementContext): GroupEntity {
             return GroupEntity(
-                id = rs.getInt("id"),
+                id = rs.getInt("groupId"),
                 name = rs.getString("name"),
                 description = rs.getString("description"),
                 createdAt = rs.getTimestamp("createdAt").time,

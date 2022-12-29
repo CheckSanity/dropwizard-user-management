@@ -1,6 +1,8 @@
 package com.usermanagement.api.resources.users
 
+import com.usermanagement.api.models.users.AssignUserModel
 import com.usermanagement.api.models.users.NewUserModel
+import com.usermanagement.api.models.users.UnassignUserModel
 import com.usermanagement.api.models.users.UpdateUserModel
 import javax.validation.Valid
 import javax.validation.constraints.Max
@@ -28,8 +30,8 @@ interface IUsersResources {
         offset: Int,
 
         @QueryParam("sort")
-        @DefaultValue("id")
-        @Pattern(regexp = "id|firstName|lastName|createdAt|deletedAt|email")
+        @DefaultValue("userId")
+        @Pattern(regexp = "userId|firstName|lastName|createdAt|deletedAt|email")
         sort: String,
 
         @QueryParam("order")
@@ -60,4 +62,28 @@ interface IUsersResources {
     @DELETE
     @Path("{userId}")
     fun deleteUser(@PathParam("userId") userId: Int): Response
+
+    @POST
+    @Path("{userId}/assign")
+    fun assignUser(
+        @PathParam("userId") userId: Int,
+        @NotNull @Valid assignUserModel: AssignUserModel
+    ): Response
+
+    @POST
+    @Path("{userId}/unassign")
+    fun unassignUser(
+        @PathParam("userId") userId: Int,
+        @NotNull @Valid unassignUserModel: UnassignUserModel
+    ): Response
+
+    @GET
+    @Path("{userId}/responsibilities")
+    fun userResponsibilities(
+        @PathParam("userId")
+        userId: Int,
+
+        @QueryParam("group_id")
+        groupId: Int
+    ): Response
 }

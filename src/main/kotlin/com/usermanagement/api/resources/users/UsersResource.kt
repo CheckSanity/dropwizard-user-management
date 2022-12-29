@@ -1,6 +1,8 @@
 package com.usermanagement.api.resources.users
 
+import com.usermanagement.api.models.users.AssignUserModel
 import com.usermanagement.api.models.users.NewUserModel
+import com.usermanagement.api.models.users.UnassignUserModel
 import com.usermanagement.api.models.users.UpdateUserModel
 import com.usermanagement.api.models.users.UserModel.Companion.toModel
 import com.usermanagement.repository.users.IUsersRepository
@@ -166,6 +168,47 @@ class UsersResource(di: DI) : IUsersResources {
                             .build()
                     }
                 }
+            }
+        )
+    }
+
+    override fun assignUser(userId: Int, assignUserModel: AssignUserModel): Response {
+        return usersRepository.assignUser(
+            userId = userId,
+            groupId = assignUserModel.groupId,
+            responsibility = assignUserModel.responsibility
+        ).fold(
+            success = {
+                Response.status(Response.Status.NO_CONTENT).build()
+            },
+            failure = { error ->
+                Response.status(Response.Status.NOT_FOUND).entity(error.message).build()
+            }
+        )
+    }
+
+    override fun unassignUser(userId: Int, unassignUserModel: UnassignUserModel): Response {
+        return usersRepository.unassignUser(
+            userId = userId,
+            groupId = unassignUserModel.groupId,
+        ).fold(
+            success = {
+                Response.status(Response.Status.NO_CONTENT).build()
+            },
+            failure = { error ->
+                Response.status(Response.Status.NOT_FOUND).entity(error.message).build()
+            }
+        )
+    }
+
+    override fun userResponsibilities(userId: Int, groupId: Int): Response {
+        return usersRepository.getResponsibility(userId = userId, groupId = groupId).fold(
+            success = { userResponsibility ->
+                Response.status(Response.Status.OK).entity(userResponsibility.responsibility)
+                    .build()
+            },
+            failure = { error ->
+                Response.status(Response.Status.NOT_FOUND).entity(error.message).build()
             }
         )
     }

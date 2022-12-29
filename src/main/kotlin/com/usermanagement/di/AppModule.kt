@@ -1,7 +1,11 @@
 package com.usermanagement.di
 
 import com.usermanagement.AppConfiguration
+import com.usermanagement.database.dao.groupUsers.GroupUsersDao
+import com.usermanagement.database.dao.groupUsers.IGroupUsersDao
 import com.usermanagement.database.dao.groups.GroupsDao
+import com.usermanagement.database.dao.groups.IGroupsDao
+import com.usermanagement.database.dao.users.IUsersDao
 import com.usermanagement.database.dao.users.UsersDao
 import com.usermanagement.repository.groups.GroupsRepository
 import com.usermanagement.repository.groups.IGroupsRepository
@@ -21,12 +25,24 @@ object AppModule {
         DI {
             bindSingleton { jdbi }
 
+            bindSingleton<IUsersDao> {
+                UsersDao(database = instance())
+            }
+
+            bindSingleton<IGroupsDao> {
+                GroupsDao(database = instance())
+            }
+
+            bindSingleton<IGroupUsersDao> {
+                GroupUsersDao(database = instance())
+            }
+
             bindSingleton<IUsersRepository> {
-                UsersRepository(usersDao = UsersDao(database = instance()))
+                UsersRepository(this.di)
             }
 
             bindSingleton<IGroupsRepository> {
-                GroupsRepository(groupsDao = GroupsDao(database = instance()))
+                GroupsRepository(this.di)
             }
         }
     }

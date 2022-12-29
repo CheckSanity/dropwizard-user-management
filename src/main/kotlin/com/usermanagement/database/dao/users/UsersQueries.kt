@@ -14,7 +14,7 @@ import java.util.*
 interface UsersQueries {
     @SqlUpdate(
         "CREATE TABLE IF NOT EXISTS users " +
-                "(id INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
+                "(userId INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
                 "firstName VARCHAR, " +
                 "lastName VARCHAR, " +
                 "email VARCHAR UNIQUE, " +
@@ -48,13 +48,13 @@ interface UsersQueries {
         @Bind("createdAt") createdAt: Timestamp
     ): Int?
 
-    @SqlQuery("SELECT * FROM users WHERE id = :id")
+    @SqlQuery("SELECT * FROM users WHERE userId = :id")
     fun getById(@Bind("id") id: Int): UserEntity?
 
     @SqlQuery("SELECT * FROM users WHERE email = :email")
     fun getByEmail(@Bind("email") email: String): UserEntity?
 
-    @SqlUpdate("UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email WHERE id = :id")
+    @SqlUpdate("UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email WHERE userId = :id")
     fun update(
         @Bind("id") id: Int,
         @Bind("firstName") firstName: String,
@@ -62,7 +62,7 @@ interface UsersQueries {
         @Bind("email") email: String
     )
 
-    @SqlUpdate("UPDATE users SET deletedAt = :deletedAt WHERE id = :id")
+    @SqlUpdate("UPDATE users SET deletedAt = :deletedAt WHERE userId = :id")
     fun delete(
         @Bind("id") id: Int,
         @Bind("deletedAt") deletedAt: Timestamp

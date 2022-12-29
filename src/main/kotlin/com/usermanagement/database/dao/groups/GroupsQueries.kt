@@ -13,7 +13,7 @@ import java.util.*
 interface GroupsQueries {
     @SqlUpdate(
         "CREATE TABLE IF NOT EXISTS groups " +
-                "(id INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
+                "(groupId INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
                 "name VARCHAR UNIQUE, " +
                 "description TEXT, " +
                 "createdat TIMESTAMP, " +
@@ -41,13 +41,13 @@ interface GroupsQueries {
         @Bind("createdAt") createdAt: Timestamp
     ): Int?
 
-    @SqlQuery("SELECT * FROM groups where id = :id")
+    @SqlQuery("SELECT * FROM groups WHERE groupId = :id")
     fun getById(@Bind("id") id: Int): GroupEntity?
 
-    @SqlQuery("SELECT * FROM groups where name = :name")
+    @SqlQuery("SELECT * FROM groups WHERE name = :name")
     fun getByName(@Bind("name") name: String): GroupEntity?
 
-    @SqlUpdate("UPDATE groups SET deletedAt = :deletedAt WHERE id = :id")
+    @SqlUpdate("UPDATE groups SET deletedAt = :deletedAt WHERE groupId = :id")
     fun delete(
         @Bind("id") id: Int,
         @Bind("deletedAt") deletedAt: Timestamp
