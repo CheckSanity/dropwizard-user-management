@@ -201,7 +201,7 @@ class UsersResource(di: DI) : IUsersResources {
         )
     }
 
-    override fun userResponsibilities(userId: Int, groupId: Int): Response {
+    override fun getUserResponsibilities(userId: Int, groupId: Int): Response {
         return usersRepository.getResponsibility(userId = userId, groupId = groupId).fold(
             success = { userResponsibility ->
                 Response.status(Response.Status.OK).entity(userResponsibility.responsibility)

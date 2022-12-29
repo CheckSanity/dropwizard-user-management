@@ -15,4 +15,6 @@ interface IGroupUsersDao {
     )
 
     fun getByGroupUserId(userId: Int, groupId: Int): GroupUsersEntity?
+
+    fun getUserIdsByGroupId(groupId: Int, limit: Int, offset: Int): List<Int>
 }

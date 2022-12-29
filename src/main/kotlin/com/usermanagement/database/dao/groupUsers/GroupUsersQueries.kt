@@ -37,4 +37,11 @@ interface GroupUsersQueries {
         @Bind("groupId") groupId: Int,
         @Bind("userId") userId: Int
     )
+
+    @SqlQuery("SELECT group_users.userId FROM group_users WHERE groupId = :groupId LIMIT :limit OFFSET :offset")
+    fun getUserIdsByGroupId(
+        @Bind("groupId") groupId: Int,
+        @Bind("limit") limit: Int,
+        @Bind("offset") offset: Int
+    ): List<Int>
 }

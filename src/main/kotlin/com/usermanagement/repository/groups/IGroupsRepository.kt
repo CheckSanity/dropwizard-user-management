@@ -15,4 +15,6 @@ interface IGroupsRepository {
     fun createGroup(newGroup: NewGroup): Result<Group, RepositoryError>
 
     fun deleteGroup(groupId: Int): Result<Group, RepositoryError>
+
+    fun getUsers(groupId: Int, limit: Int, offset: Int): Result<List<Int>, RepositoryError>
 }

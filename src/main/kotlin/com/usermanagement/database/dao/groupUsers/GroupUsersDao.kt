@@ -17,4 +17,7 @@ class GroupUsersDao(database: Jdbi) : IGroupUsersDao {
 
     override fun getByGroupUserId(userId: Int, groupId: Int) =
         queries.getByGroupUserId(groupId = groupId, userId = userId)
+
+    override fun getUserIdsByGroupId(groupId: Int, limit: Int, offset: Int): List<Int> =
+        queries.getUserIdsByGroupId(groupId = groupId, limit = limit, offset = offset)
 }

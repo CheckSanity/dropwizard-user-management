@@ -41,4 +41,22 @@ interface IGroupsResources {
     @DELETE
     @Path("{groupId}")
     fun deleteGroup(@PathParam("groupId") groupId: Int): Response
+
+    @GET
+    @Path("{groupId}/users")
+    fun getUsers(
+        @PathParam("groupId")
+        groupId: Int,
+
+        @QueryParam("limit")
+        @Min(1)
+        @Max(100)
+        @DefaultValue("25")
+        limit: Int,
+
+        @QueryParam("offset")
+        @Min(0)
+        @DefaultValue("0")
+        offset: Int,
+    ): Response
 }

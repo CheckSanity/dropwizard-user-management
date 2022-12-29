@@ -79,7 +79,7 @@ interface IUsersResources {
 
     @GET
     @Path("{userId}/responsibilities")
-    fun userResponsibilities(
+    fun getUserResponsibilities(
         @PathParam("userId")
         userId: Int,
 

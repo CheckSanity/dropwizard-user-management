@@ -126,4 +126,18 @@ class GroupsResource(di: DI) : IGroupsResources {
             }
         )
     }
+
+    override fun getUsers(groupId: Int, limit: Int, offset: Int): Response {
+        return groupsRepository.getUsers(groupId = groupId, limit = limit, offset = offset).fold(
+            success = { userIds ->
+                Response.status(Response.Status.OK).entity(userIds).build()
+            },
+            failure = { error ->
+                Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(error.message)
+                    .build()
+            }
+        )
+    }
 }

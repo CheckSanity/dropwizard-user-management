@@ -2,6 +2,7 @@ package com.usermanagement.repository.groups
 
 import com.github.kittinunf.result.Result
 import com.github.kittinunf.result.isFailure
+import com.usermanagement.database.dao.groupUsers.IGroupUsersDao
 import com.usermanagement.database.dao.groups.IGroupsDao
 import com.usermanagement.database.entity.GroupEntity
 import com.usermanagement.repository.groups.Group.Companion.toData
@@ -11,6 +12,7 @@ import org.kodein.di.instance
 
 class GroupsRepository(di: DI) : IGroupsRepository {
     private val groupsDao: IGroupsDao by di.instance()
+    private val groupUsersDao: IGroupUsersDao by di.instance()
 
     override fun getGroups(
         limit: Int,
@@ -58,6 +60,22 @@ class GroupsRepository(di: DI) : IGroupsRepository {
             groupsDao.delete(id = groupId)
 
             return getGroup(id = groupId)
+        }
+    }
+
+    override fun getUsers(
+        groupId: Int,
+        limit: Int,
+        offset: Int
+    ): Result<List<Int>, RepositoryError> {
+        return Result.of {
+            return Result.success(
+                groupUsersDao.getUserIdsByGroupId(
+                    groupId = groupId,
+                    limit = limit,
+                    offset = offset
+                )
+            )
         }
     }
 
