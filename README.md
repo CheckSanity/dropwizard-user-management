@@ -10,3 +10,11 @@
 2. Start application
     - Change dir to root
     - Run app with `./gradlew run`
+
+### Run tests
+
+To run tests execute `./gradlew test`
+
+### Swagger
+
+Swagger available at http://localhost:7070/swagger

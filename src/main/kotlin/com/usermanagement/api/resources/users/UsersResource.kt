@@ -9,14 +9,10 @@ import com.usermanagement.repository.users.IUsersRepository
 import com.usermanagement.repository.users.NewUser
 import com.usermanagement.repository.users.UpdateUser
 import com.usermanagement.utils.RepositoryError
-import org.kodein.di.DI
-import org.kodein.di.instance
 import javax.ws.rs.core.Response
 
 
-class UsersResource(di: DI) : IUsersResources {
-    private val usersRepository: IUsersRepository by di.instance()
-
+class UsersResource(private val usersRepository: IUsersRepository) : IUsersResources {
     override fun getUsers(
         limit: Int,
         offset: Int,

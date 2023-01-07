@@ -5,14 +5,10 @@ import com.usermanagement.api.models.groups.NewGroupModel
 import com.usermanagement.repository.groups.IGroupsRepository
 import com.usermanagement.repository.groups.NewGroup
 import com.usermanagement.utils.RepositoryError
-import org.kodein.di.DI
-import org.kodein.di.instance
 import javax.ws.rs.core.Response
 
 
-class GroupsResource(di: DI) : IGroupsResources {
-    private val groupsRepository: IGroupsRepository by di.instance()
-
+class GroupsResource(private val groupsRepository: IGroupsRepository) : IGroupsResources {
     override fun getGroups(
         limit: Int,
         offset: Int,
