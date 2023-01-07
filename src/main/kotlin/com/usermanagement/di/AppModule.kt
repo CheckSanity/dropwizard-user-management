@@ -48,6 +48,6 @@ object AppModule {
     }
 
     fun init(environment: Environment, configuration: AppConfiguration) {
-        jdbi = JdbiFactory().build(environment, configuration.dataSource, "postgresql")
+        jdbi = JdbiFactory().build(environment, configuration.dataSource, "mysql")
     }
 }

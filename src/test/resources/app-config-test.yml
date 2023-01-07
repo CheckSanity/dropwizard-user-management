@@ -7,10 +7,10 @@ server:
     - type: http
       port: 0
 database:
-  driverClass: org.postgresql.Driver
-  user: user_management_user_test # TODO Hide under environment variables
+  driverClass: com.mysql.cj.jdbc.Driver
+  user: database_user_test # TODO Hide under environment variables
   password: 123456 # TODO Hide under environment variables
-  url: jdbc:postgresql://localhost:5432/user_management_service_test # TODO Hide under environment variables
+  url: jdbc:mysql://localhost:6603/user_management_service_test # TODO Hide under environment variables
   properties:
     charSet: UTF-8
   maxWaitForConnection: 1s
