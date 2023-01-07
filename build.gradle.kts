@@ -48,6 +48,9 @@ dependencies {
     // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-testing
     testImplementation("io.dropwizard:dropwizard-testing:2.1.4")
 
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation("org.mockito:mockito-core:4.11.0")
+
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
 

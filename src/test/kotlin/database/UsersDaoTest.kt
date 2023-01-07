@@ -189,12 +189,12 @@ internal class UsersDaoTest {
         jdbi.fillTableWithUsers(3)
 
         val expectedUser = TestUser.create(id = 1, deleted = false).copy(
-            deletedAt = 1672342506
+            deletedAt = 1672342000
         )
 
         usersDao.delete(
             id = 1,
-            deletedAt = Timestamp(1672342506),
+            deletedAt = Timestamp(1672342000),
         )
 
         val actualUser = usersDao.getById(id = 1)

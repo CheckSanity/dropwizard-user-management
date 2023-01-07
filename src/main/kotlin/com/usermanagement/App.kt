@@ -3,6 +3,8 @@ package com.usermanagement
 import com.usermanagement.api.resources.groups.GroupsResource
 import com.usermanagement.api.resources.users.UsersResource
 import com.usermanagement.di.AppModule
+import com.usermanagement.repository.groups.IGroupsRepository
+import com.usermanagement.repository.users.IUsersRepository
 import io.dropwizard.Application
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor
 import io.dropwizard.configuration.SubstitutingSourceProvider
@@ -12,6 +14,7 @@ import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
 import io.federecio.dropwizard.swagger.SwaggerBundle
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration
+import org.kodein.di.instance
 
 class App : Application<AppConfiguration>() {
     override fun initialize(bootstrap: Bootstrap<AppConfiguration>) {
@@ -34,8 +37,11 @@ class App : Application<AppConfiguration>() {
     override fun run(configuration: AppConfiguration, environment: Environment) {
         AppModule.init(configuration = configuration, environment = environment)
 
-        environment.jersey().register(UsersResource(AppModule.di))
-        environment.jersey().register(GroupsResource(AppModule.di))
+        val usersRepository: IUsersRepository by AppModule.di.instance()
+        val groupsRepository: IGroupsRepository by AppModule.di.instance()
+
+        environment.jersey().register(UsersResource(usersRepository = usersRepository))
+        environment.jersey().register(GroupsResource(groupsRepository = groupsRepository))
     }
 
 
