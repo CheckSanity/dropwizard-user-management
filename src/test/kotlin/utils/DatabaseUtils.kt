@@ -9,8 +9,8 @@ object DatabaseUtils {
     fun createTestJdbi(): Jdbi {
         return Jdbi.create(
             DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/user_management_service_test",
-                "user_management_user_test",
+                "jdbc:mysql://localhost:6603/user_management_service_test",
+                "database_user_test",
                 "123456"
             )
         ).also { jdbi ->

@@ -2,10 +2,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.21"
+    application
 }
 
 group = "cc.sanity"
 version = "1.0-SNAPSHOT"
+
+apply {
+    plugin("application")
+}
 
 repositories {
     mavenCentral()
@@ -29,8 +34,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.kodein.di/kodein-di
     implementation("org.kodein.di:kodein-di:7.16.0")
 
-    // https://mvnrepository.com/artifact/org.postgresql/postgresql
-    implementation("org.postgresql:postgresql:42.5.1")
+    // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation("com.mysql:mysql-connector-j:8.0.31")
 
     // https://mvnrepository.com/artifact/com.github.kittinunf.result/result
     implementation("com.github.kittinunf.result:result:5.3.0")
@@ -38,6 +43,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.smoketurner/dropwizard-swagger
     implementation("com.smoketurner:dropwizard-swagger:2.0.12-1")
 
+    /** Tests **/
     testImplementation(kotlin("test"))
     // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-testing
     testImplementation("io.dropwizard:dropwizard-testing:2.1.4")
@@ -52,5 +58,9 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
+}
+
+application {
+    mainClass.set("com.usermanagement.App")
 }

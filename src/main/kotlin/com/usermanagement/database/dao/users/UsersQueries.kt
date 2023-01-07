@@ -13,17 +13,17 @@ import java.util.*
 @RegisterRowMapper(UserEntity.Mapper::class)
 interface UsersQueries {
     @SqlUpdate(
-        "CREATE TABLE IF NOT EXISTS users " +
-                "(userId INTEGER PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY," +
-                "firstName VARCHAR, " +
-                "lastName VARCHAR, " +
-                "email VARCHAR UNIQUE, " +
+        "CREATE TABLE IF NOT EXISTS `users` " +
+                "(userId INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," +
+                "firstName VARCHAR(100) NOT NULL, " +
+                "lastName VARCHAR(100) NOT NULL, " +
+                "email VARCHAR(255) UNIQUE NOT NULL, " +
                 "createdAt TIMESTAMP, " +
                 "deletedAt TIMESTAMP DEFAULT(NULL))"
     )
     fun createTable()
 
-    @SqlQuery("SELECT * FROM users ORDER BY <sort> <order> LIMIT :limit OFFSET :offset")
+    @SqlQuery("SELECT * FROM `users` ORDER BY <sort> <order> LIMIT :limit OFFSET :offset")
     fun getAll(
         @Define("sort") sort: String,
         @Define("order") order: String,
@@ -31,7 +31,7 @@ interface UsersQueries {
         @Bind("offset") offset: Int
     ): List<UserEntity>
 
-    @SqlQuery("SELECT * FROM users WHERE deletedAt IS NULL ORDER BY <sort> <order> LIMIT :limit OFFSET :offset")
+    @SqlQuery("SELECT * FROM `users` WHERE deletedAt IS NULL ORDER BY <sort> <order> LIMIT :limit OFFSET :offset")
     fun getActive(
         @Define("sort") sort: String,
         @Define("order") order: String,
@@ -39,7 +39,7 @@ interface UsersQueries {
         @Bind("offset") offset: Int
     ): List<UserEntity>
 
-    @SqlUpdate("INSERT INTO users (firstName, lastName, email, createdAt) VALUES (:firstName, :lastName, :email, :createdAt)")
+    @SqlUpdate("INSERT INTO `users` (firstName, lastName, email, createdAt) VALUES (:firstName, :lastName, :email, :createdAt)")
     @GetGeneratedKeys
     fun insert(
         @Bind("firstName") firstName: String,
@@ -48,13 +48,13 @@ interface UsersQueries {
         @Bind("createdAt") createdAt: Timestamp
     ): Int?
 
-    @SqlQuery("SELECT * FROM users WHERE userId = :id")
+    @SqlQuery("SELECT * FROM `users` WHERE userId = :id")
     fun getById(@Bind("id") id: Int): UserEntity?
 
-    @SqlQuery("SELECT * FROM users WHERE email = :email")
+    @SqlQuery("SELECT * FROM `users` WHERE email = :email")
     fun getByEmail(@Bind("email") email: String): UserEntity?
 
-    @SqlUpdate("UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email WHERE userId = :id")
+    @SqlUpdate("UPDATE `users` SET firstName = :firstName, lastName = :lastName, email = :email WHERE userId = :id")
     fun update(
         @Bind("id") id: Int,
         @Bind("firstName") firstName: String,
@@ -62,7 +62,7 @@ interface UsersQueries {
         @Bind("email") email: String
     )
 
-    @SqlUpdate("UPDATE users SET deletedAt = :deletedAt WHERE userId = :id")
+    @SqlUpdate("UPDATE `users` SET deletedAt = :deletedAt WHERE userId = :id")
     fun delete(
         @Bind("id") id: Int,
         @Bind("deletedAt") deletedAt: Timestamp
