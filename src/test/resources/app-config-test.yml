@@ -2,15 +2,15 @@ server:
   type: default
   applicationConnectors:
     - type: http
-      port: 7070
+      port: 0
   adminConnectors:
     - type: http
-      port: 7071
+      port: 0
 database:
   driverClass: org.postgresql.Driver
-  user: user_management_user # TODO Hide under environment variables
+  user: user_management_user_test # TODO Hide under environment variables
   password: 123456 # TODO Hide under environment variables
-  url: jdbc:postgresql://localhost:5432/user_management_service # TODO Hide under environment variables
+  url: jdbc:postgresql://localhost:5432/user_management_service_test # TODO Hide under environment variables
   properties:
     charSet: UTF-8
   maxWaitForConnection: 1s
